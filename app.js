@@ -75,5 +75,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-// app.listen(port);
+// connect to our database on modulus.io
+// mongoose.connect('mondodb://node:https://my.modulus.io/project/62716');
+
+app.listen(process.env.PORT)
 module.exports = app;
