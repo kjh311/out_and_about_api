@@ -1,14 +1,21 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
+// var port = process.env.PORT || 8080;
+var apiRouter = express.Router();
 var app = express();
+
+apiRouter.get('/', function(req, res){
+  res.json({message: 'Horray! Welcome to the API!!'})
+});
+
+app.use('/api', apiRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -16,14 +23,26 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+// configure app to handle CORS requests
+app.use(function(req, res, next){
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers',
+    'X-Requested-With, content-type, \Authorization');
+  next();
+});
+
+// log all requests to the console
+app.use(morgan('dev'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,5 +75,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
+// app.listen(port);
 module.exports = app;
