@@ -75,8 +75,12 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// base setup
+
+...
+
 // connect to our database on modulus.io
-// mongoose.connect('mondodb://node:https://my.modulus.io/project/62716');
+mongoose.connect('out-and-about-62716.onmodulus.net');
 
 app.listen(process.env.PORT)
 module.exports = app;
